@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impulse List vs Actual List
+    </title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <section class="AddItem">
+        <h1>Do you actually want to buy the thing, or is it just a fleeting desire?</h1>
+        <!-- Browsers can only perform a CREATE (Think CRUD acronymn) operation if they send POST request to the server -->
+        <!-- method tells browsers what kind of request to send, here we use POST because we're sending a POST request 
+      action html attribute tells the browser where to send the POST request, here we're sending it to /quotes -->
+        <div class="addItemForm">
+            <form action="/addDocumentToWishListItemsCollection" method="POST">
+                <div>
+                <label name="itemName">What are you thinking about buying?</label>
+                <input type="text" placeholder="Item" name="itemName" />
+                </div>
+                <div>
+                <label name="itemURL">Link to the item</label>
+                <input type="text" placeholder="Link" name="itemURL" />
+                </div>
+                <div>
+                <label name="dateAddedToList">Record the date you had the impulse to buy the item</label>
+                <input type="date" placeholder="Date" name="dateAddedToList" />
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </section>
+    <section class="DisplayIndexEJS">
+        <h2> Current Impulse List</h2>
+        <p>This is when you added items that you were thinking about buying, the item and a link to the item. If it's
+            been
+            over 2 weeks or 14 days, review the items appearing, and determine if you still want them. If not, use the
+            delete button to remove items older than 2 weeks. You've proven to yourself you don't need them!</p>
+        <ul class="ImpulseListCollectionFromMongoDBcollectionNamedWishListItems">
+            <!-- Loop through quotes objects from MongoDB -->
+            <% for(let i=0; i < impulseList.length; i++) {%>
+                <!-- output name from the iterated quote object. The name property on the quote object was defined above in the form. -->
+                <li class="items">
+                    <span data-msg-id="<%= impulseList[i]._id %>">
+                        <%= impulseList[i].dateAddedToList %>
+                    </span>
+                    <span>
+                        <%= impulseList[i].itemName %>
+                    </span>
+                    <a href="<%= impulseList[i].itemURL %>">
+                        Check out the item!
+                    </a>
+                    </span>
+                    <span><button class="trash">Delete Item</button></span>
+                    <span><button class="moveItem">Move Item</button><span>
+                            <!-- output quote from the iterated quote object. The quote property on the quote property was defined in the form above -->
+                </li>
+                <% } %>
+        </ul>
+    </section>
+    <!-- We are going to use the button below to change something, our backend will handle an UPDATE operation, in the form of a PUT request. Extra information: like a POST request, PUT can be triggered either through Javascript or through a <form> element -->
+    <section class="ActualWishList">
+        <h2>Actual Wish List</h2>
+        <p>If an item has been on the Current Impulse List for over 14 days, congradulations! Go ahead and move it to
+            this list. You should budget, save and buy these things when you have enough cash!</p>
+        <ul class="WishListCollectionFromMongoDBcollectionNamedWishListItems">
+            <!-- Loop through quotes objects from MongoDB -->
+            <% for(let i=0; i < wishList.length; i++) {%>
+                <!-- output name from the iterated quote object. The name property on the quote object was defined above in the form. -->
+                <li class="items">
+                    <span data-msg-id="<%= wishList[i]._id %>">
+                        <%= wishList[i].dateAddedToList %>
+                    </span>
+                    <span>
+                        <%= wishList[i].itemName %>
+                    </span>
+                    <a href="<%= wishList[i].itemURL %>">
+                        Check out the item!
+                    </a>
+                    <span><button class="trash">Delete Item</button></span>
+                    <!-- output quote from the iterated quote object. The quote property on the quote property was defined in the form above -->
+                </li>
+                <% } %>
+        </ul>
+    </section>
+    <!-- <section class="moveItemsButton">
+        <h2>Move Items from Impulse List to Actual Wish List</h2>
+        <p>If it's been over 14 days, congradulations! You actually want to buy this thing or things, and should save for it. Budget and get it, you want it!
+        </p>
+        <p>Move items to Actual Wish List</p>
+        <button id="replaceQuoteWithThisQuote">Move Items</button>
+    </section> -->
+    <!-- Button to delete something -->
+    <!-- <section class="deleteButton">
+        <h2>Get rid of those things you realized you don't actually want</h2>
+        <p>
+            Delete items older than 2 weeks
+        </p>
+        <button id="delete-button">Delete items older than 2 weeks</button>
+    </section> -->
+    <div id="message"></div>
+    <!-- Adding main.JS file to the index.ejs file -->
+    <script src="/main.js"></script>
+</body>
+
+</html>
