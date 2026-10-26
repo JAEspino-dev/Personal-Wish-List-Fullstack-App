@@ -1,4 +1,4 @@
-# ☀️ Fullstack Forum Impulse vs Wish List
+# ☀️ Fullstack Impulse vs Wish List
 Use this program if you want to track things you actually want to buy!  
 
 # Link
