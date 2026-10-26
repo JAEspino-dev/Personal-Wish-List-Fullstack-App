@@ -1,7 +1,9 @@
+require('dotenv').config();
 const express = require('express') // require express module
 const app = express()
 const MongoClient = require('mongodb').MongoClient
 const { ObjectId } = require('mongodb')
+const configDB = {"url":process.env.MONGODB_URI}
 // what port to host server on on computer:
 app.listen(3000, function () {
     // console.log('listening on 3000')
@@ -24,8 +26,8 @@ app.use(express.json()) // we are setting up the server to be able to read JSON 
 
 
 // we can connect to MongoDB through the MongoClient's connect method: 
-MongoClient.connect('mongodb+srv://jespino:PassWord@cluster0.wizbxmr.mongodb.net/?appName=Cluster0')
-
+MongoClient.connect(configDB.url)
+// 
     .then(client => {
         const db = client.db('Personal-Wish-List-Fullstack-App') // store link to MongoDB database in variable db. Use name of database from MongoDB exactly as it appears in MongoDB (Case sensitive!) This is what we use to access MongoDB database. Because of this, we need to put our express request handles into the MongoClient's then call
         const WishListItemsCollection = db.collection('WishListItems') // here, we've created a collection to store individually inputted wishListItems from frontend into a wishListItems collection in mongoDB. 
